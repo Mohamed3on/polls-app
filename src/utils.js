@@ -21,3 +21,6 @@ export const PropsRoute = ({ component, ...rest }) => {
 
 export const formatTimeStamp = timestamp =>
   moment(timestamp).format("DD/MM/YYYY");
+
+export const getPercentage = (number, total) =>
+  (number / total).toLocaleString("en", { style: "percent" });
