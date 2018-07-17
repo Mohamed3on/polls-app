@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { injectGlobal } from "styled-components";
-imp;
+import QuestionList from "./components/QuestionsList";
 import "normalize.css";
 
 injectGlobal`
@@ -14,7 +14,7 @@ body {
 
 class App extends Component {
   render() {
-    return <div />;
+    return <QuestionList />;
   }
 }
 
