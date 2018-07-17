@@ -1,8 +1,21 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { formatTimeStamp } from "../utils";
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: initial;
+  &:focus,
+  &:hover,
+  &:visited,
+  &:link,
+  &:active {
+    text-decoration: none;
+  }
+`;
 
 const Wrapper = styled.div`
   margin: 50px;
@@ -22,18 +35,23 @@ const QuestionCard = styled.div`
   }
   box-shadow: 3px 3px 3px 0 rgba(0, 0, 0, 0.1);
   border-radius: 5px;
-  padding: 1em 1em 0 1em;
+  padding: 1em;
 `;
 
 const SingleQuestion = ({ question }) => {
+  const questionID = question.url.split("/").pop();
   return (
-    <QuestionCard>
-      <b>{question.question}</b>
-      <QuestionExtras>
-        <p>{formatTimeStamp(question.published_at)}</p>
-        <p>{question.choices.length} choices</p>
-      </QuestionExtras>
-    </QuestionCard>
+    <StyledLink
+      to={{ pathname: `/question/${questionID}`, state: { question } }}
+    >
+      <QuestionCard>
+        <b>{question.question}</b>
+        <QuestionExtras>
+          <p>{formatTimeStamp(question.published_at)}</p>
+          <p>{question.choices.length} choices</p>
+        </QuestionExtras>
+      </QuestionCard>
+    </StyledLink>
   );
 };
 
