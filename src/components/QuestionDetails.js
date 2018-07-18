@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 
 import api from "../api";
 
-import { getPercentage, getQuestionID } from "../utils";
+import { getPercentage, getQuestionID, sumVotes } from "../utils";
 import { hoverColor } from "../commonStyles";
 
 const Wrapper = styled.div`
@@ -53,27 +53,7 @@ const Choice = ({
     <p>{percentage}</p>
   </StyledChoice>
 );
-const Choices = ({ question }) => {
-  const totalVotes = question.choices.reduce(
-    (accumulator, currentChoice) => accumulator + currentChoice.votes,
-    0
-  );
-  return (
-    <ChoicesList>
-      {question.choices.map((choice, index) => (
-        <Choice
-          chosen={this.state.choiceIndex === index}
-          choice={choice}
-          key={choice.choice}
-          index={index}
-          percentage={getPercentage(choice.votes, totalVotes)}
-          onClick={this.choiceOnClick}
-          hoverEnabled={!this.state.answered}
-        />
-      ))}
-    </ChoicesList>
-  );
-};
+
 export default class QuestionDetails extends Component {
   state = {
     question: null,
@@ -83,34 +63,6 @@ export default class QuestionDetails extends Component {
 
   componentDidMount = async () => {
     this.setState({ question: await this.getQuestion() });
-  };
-
-  choiceOnClick = index => {
-    !this.state.answered && this.setState({ choiceIndex: index });
-  };
-  submitVote = async () => {
-    const toastProps = {
-      position: "top-right",
-      autoClose: 5000,
-      closeOnClick: true,
-      pauseOnHover: true,
-      hideProgressBar: true
-    };
-    if (this.state.choiceIndex) {
-      await api.submitVote(
-        getQuestionID(this.state.question),
-        this.state.choiceIndex + 1
-      );
-
-      this.setState({ answered: true });
-      toast.success("🦄 Your vote was submitted successfully!", {
-        ...toastProps
-      });
-      return;
-    }
-    toast.warn("Please select a choice first!", {
-      ...toastProps
-    });
   };
 
   getQuestion = async () => {
@@ -123,6 +75,38 @@ export default class QuestionDetails extends Component {
     }
   };
 
+  choiceOnClick = index => {
+    !this.state.answered && this.setState({ choiceIndex: index });
+  };
+
+  toastNotification = voteSubmitted => {
+    const toastProps = {
+      position: "top-right",
+      autoClose: 5000,
+      closeOnClick: true,
+      pauseOnHover: true,
+      hideProgressBar: true
+    };
+    voteSubmitted
+      ? toast.success("🦄 Your vote was submitted successfully!", {
+          ...toastProps
+        })
+      : toast.warn("Please select a choice first!", {
+          ...toastProps
+        });
+  };
+  submitVote = async () => {
+    if (this.state.choiceIndex) {
+      await api.submitVote(
+        getQuestionID(this.state.question),
+        this.state.choiceIndex + 1
+      );
+
+      this.setState({ answered: true });
+      this.toastNotification(true);
+    } else this.toastNotification(false);
+  };
+
   render() {
     const question = this.state.question;
     if (!question) return null;
@@ -131,7 +115,19 @@ export default class QuestionDetails extends Component {
       <Wrapper>
         <h1>Question Details</h1>
         <h2>{question.question}</h2>
-        <Choices question={question} />
+        <ChoicesList>
+          {question.choices.map((choice, index) => (
+            <Choice
+              chosen={this.state.choiceIndex === index}
+              choice={choice}
+              key={choice.choice}
+              index={index}
+              percentage={getPercentage(choice.votes, sumVotes(question))}
+              onClick={this.choiceOnClick}
+              hoverEnabled={!this.state.answered}
+            />
+          ))}
+        </ChoicesList>
         <Button
           onClick={this.submitVote}
           variant="outlined"

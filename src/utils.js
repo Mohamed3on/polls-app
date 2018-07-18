@@ -26,3 +26,9 @@ export const getPercentage = (number, total) =>
   (number / total).toLocaleString("en", { style: "percent" });
 
 export const getQuestionID = question => question.url.split("/").pop();
+
+export const sumVotes = question =>
+  question.choices.reduce(
+    (accumulator, currentChoice) => accumulator + currentChoice.votes,
+    0
+  );
