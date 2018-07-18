@@ -1,3 +1,14 @@
+# How to run the app
+
+- Easy way: go to the [deployed version](https://mohamed-polls-app.now.sh).
+
+- Hard way:
+
+  ```
+  yarn install
+  yarn start
+  ```
+
 ## Observations/bugs
 
 - it turns out that with CSS Grid, you can't really style rows/columns, so you can apply styles on hover to them, as rows aren't actually HTML elements. Bummer.
