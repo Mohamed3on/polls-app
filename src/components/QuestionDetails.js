@@ -133,6 +133,7 @@ export default class QuestionDetails extends Component {
           variant="outlined"
           color="primary"
           style={{ float: "right", marginTop: "1em" }}
+          disabled={this.state.answered}
         >
           Vote
         </Button>
