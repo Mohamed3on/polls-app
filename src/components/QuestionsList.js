@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import { hoverColor } from "../commonStyles";
 import { formatTimeStamp, getQuestionID } from "../utils";
+import api from "../api";
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -66,9 +66,7 @@ export default class QuestionsList extends Component {
     questions: []
   };
   componentDidMount = async () => {
-    const response = await axios.get(
-      "https://polls.apiblueprint.org/questions"
-    );
+    const response = await api.getQuestions();
     const questions = response.data;
     this.setState({ questions });
   };
