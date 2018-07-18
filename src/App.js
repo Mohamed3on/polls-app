@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { injectGlobal } from "styled-components";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import styled, { injectGlobal } from "styled-components";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "normalize.css";
 
 import QuestionList from "./components/QuestionsList";
@@ -14,15 +14,31 @@ body {
     color: #343434;
   }
 `;
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  height: 80px;
+`;
 
 class App extends Component {
   render() {
     return (
       <Router>
-        <Switch>
-          <Route exact path="/" component={QuestionList} />
-          <Route path="/question/:id" component={QuestionDetails} />
-        </Switch>
+        <div>
+          <Header>
+            <Link to="/">
+              <p>Questions List</p>
+            </Link>
+          </Header>
+          <Switch>
+            <Route exact path="/" component={QuestionList} />
+            <Route path="/question/:id" component={QuestionDetails} />
+          </Switch>
+        </div>
       </Router>
     );
   }
