@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
@@ -34,25 +35,6 @@ const StyledChoice = styled.div`
     `
   background-color:${hoverColor}`};
 `;
-
-const Choice = ({
-  choice,
-  percentage,
-  chosen,
-  index,
-  onClick,
-  hoverEnabled
-}) => (
-  <StyledChoice
-    hoverEnabled={hoverEnabled}
-    onClick={() => onClick(index)}
-    chosen={chosen}
-  >
-    <p>{choice.choice}</p>
-    <p>{choice.votes}</p>
-    <p>{percentage}</p>
-  </StyledChoice>
-);
 
 export default class QuestionDetails extends Component {
   state = {
@@ -101,7 +83,6 @@ export default class QuestionDetails extends Component {
         getQuestionID(this.state.question),
         this.state.choiceIndex + 1
       );
-
       this.setState({ answered: true });
       this.toastNotification(true);
     } else this.toastNotification(false);
@@ -142,3 +123,35 @@ export default class QuestionDetails extends Component {
     );
   }
 }
+QuestionDetails.propTypes = {
+  location: PropTypes.object,
+  match: PropTypes.object
+};
+
+const Choice = ({
+  choice,
+  percentage,
+  chosen,
+  index,
+  onClick,
+  hoverEnabled
+}) => (
+  <StyledChoice
+    hoverEnabled={hoverEnabled}
+    onClick={() => onClick(index)}
+    chosen={chosen}
+  >
+    <p>{choice.choice}</p>
+    <p>{choice.votes}</p>
+    <p>{percentage}</p>
+  </StyledChoice>
+);
+
+Choice.propTypes = {
+  choice: PropTypes.object.isRequired,
+  percentage: PropTypes.string.isRequired,
+  chosen: PropTypes.bool.isRequired,
+  index: PropTypes.number.isRequired,
+  onClick: PropTypes.func.isRequired,
+  hoverEnabled: PropTypes.bool.isRequired
+};
