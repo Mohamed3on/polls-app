@@ -3,7 +3,9 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { formatTimeStamp } from "../utils";
+
+import { hoverColor } from "../commonStyles";
+import { formatTimeStamp, getQuestionID } from "../utils";
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -31,7 +33,7 @@ const QuestionExtras = styled.div`
 `;
 const QuestionCard = styled.div`
   &:hover {
-    background-color: hsla(200, 79%, 85%, 0.53);
+    background-color: ${hoverColor};
   }
   box-shadow: 3px 3px 3px 0 rgba(0, 0, 0, 0.1);
   border-radius: 5px;
@@ -39,7 +41,7 @@ const QuestionCard = styled.div`
 `;
 
 const SingleQuestion = ({ question }) => {
-  const questionID = question.url.split("/").pop();
+  const questionID = getQuestionID(question);
   return (
     <StyledLink
       to={{ pathname: `/question/${questionID}`, state: { question } }}

@@ -24,3 +24,5 @@ export const formatTimeStamp = timestamp =>
 
 export const getPercentage = (number, total) =>
   (number / total).toLocaleString("en", { style: "percent" });
+
+export const getQuestionID = question => question.url.split("/").pop();
