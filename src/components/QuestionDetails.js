@@ -10,7 +10,7 @@ import { getPercentage, getQuestionID, sumVotes } from "../utils";
 import { hoverColor } from "../commonStyles";
 
 const Wrapper = styled.div`
-  margin: auto auto 50px;
+  margin: 0 auto 100px;
   width: 80%;
 `;
 const ChoicesList = styled.div`
